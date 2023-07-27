@@ -8,6 +8,16 @@ app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.dafmrk2.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri);
+
+const featuredProducts = client
+  .db("PC_Builder_Bangladesh")
+  .collection("featured");
+
+app.get("/api/featured", async (req, res) => {
+  const featured = await featuredProducts.find({}).toArray();
+  res.send(featured);
+});
 
 app.get("/", async (req, res) => {
   res.send("PC Builder Server is working");
