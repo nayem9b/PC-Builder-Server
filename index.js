@@ -13,17 +13,8 @@ const featuredProducts = client
   .db("PC_Builder_Bangladesh")
   .collection("featured");
 const products = client.db("PC_Builder_Bangladesh").collection("products");
-const motherBoard = client
-  .db("PC_Builder_Bangladesh")
-  .collection("motherBoard");
-const ram = client.db("PC_Builder_Bangladesh").collection("featured");
-const powerSupplyUnit = client
-  .db("PC_Builder_Bangladesh")
-  .collection("powerSupplyUnit");
-const storageDevice = client
-  .db("PC_Builder_Bangladesh")
-  .collection("storageDevice");
-const monitor = client.db("PC_Builder_Bangladesh").collection("monitor");
+const pcbuilder = client.db("PC_Builder_Bangladesh").collection("pcbuilder");
+const categories = client.db("PC_Builder_Bangladesh").collection("category");
 
 app.get("/api/category/:id", async (req, res) => {
   const filter = req.params.id;
@@ -34,11 +25,24 @@ app.get("/api/category", async (req, res) => {
   const featured = await products.find({}).toArray();
   res.send(featured);
 });
-app.get("/api/products", async (req, res) => {
-  const allProducts = await products.find({ featured: "true" }).toArray();
-  res.send(allProducts);
+app.get("/api/featured", async (req, res) => {
+  const featuredProducts = await products.find({ featured: "true" }).toArray();
+  res.send(featuredProducts);
 });
-app.get("/api/productdetails/:id", async (req, res) => {
+// Categories
+app.get("/api/categories", async (req, res) => {
+  const productCategories = await categories.find({}).toArray();
+  res.send(productCategories);
+});
+app.get("/api/products", async (req, res) => {
+  const Products = await products.find({}).toArray();
+  res.send(Products);
+});
+app.get("/api/pcbuilder", async (req, res) => {
+  const builder = await pcbuilder.find({}).toArray();
+  res.send(builder);
+});
+app.get("/api/products/:id", async (req, res) => {
   const id = req.params.id;
   console.log(id);
   const productdetails = await products
